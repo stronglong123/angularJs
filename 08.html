@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义过滤器</title>
+</head>
+<body ng-app="App">
+<div ng-controller="DemoController">
+    <!-- <h4>{{info|capitalize:123}}{{name}}</h4>-->
+    <h4>{{name|demo}}</h4>
+    <h4>{{info|capitalize:true}}{{name}}</h4>
+</div>
+
+
+<script src="libs/angular.min.js"></script>
+<script>
+    var App = angular.module('App', []);
+
+    App.controller('DemoController', ['$scope', function ($scope) {
+        $scope.name = 'yeci';
+        $scope.info = 'my name is ';
+    }]);
+
+
+
+    //自定义过滤器
+    App.filter('demo', function () {
+        console.log('hello');
+        return function (input) {
+            return input;
+        };
+    });
+
+    App.filter('capitalize', function () {
+        return function (input, flag) {
+            if (flag){
+                return input[0].toUpperCase() + input.slice(1);
+            }
+            return input;
+        }
+    });
+
+
+</script>
+</body>
+</html>

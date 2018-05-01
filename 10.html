@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="App">
+<head>
+    <meta charset="UTF-8">
+    <title>服务</title>
+</head>
+<body>
+
+<div ng-controller="DemoController">
+    <dl>
+        <dt>{{title}}</dt>
+        <dd>absUrl:{{absUrl}}</dd>
+        <dd>url:{{url}}</dd>
+        <dd>host:{{host}}</dd>
+        <dd>search:{{search}}</dd>
+        <dd>hash:{{hash}}</dd>
+        <dd>protocol:{{protocol}}</dd>
+        <dd>port:{{port}}</dd>
+    </dl>
+
+
+    <ul>
+        <li>{{msg}}</li>
+        <li>{{now|date:'yyyy-MM-dd hh:mm:ss'}}</li>
+        <li>
+            <button ng-click="stop()">停</button>
+        </li>
+
+        <li>价格：{{price}}</li>
+        <li>大写：{{str}}</li>
+        <li>截取:{{str1}}</li>
+    </ul>
+
+</div>
+
+
+<script src="libs/angular.min.js"></script>
+<script>
+    var App = angular.module('App', []);
+    App.controller('DemoController', ['$scope', '$location', '$timeout', '$interval', '$filter', '$log', '$http'
+        function ($scope, $location, $timeout, $interval, $filter, $log, $http) {
+            $scope.absUrl = $location.absUrl();
+            $scope.url = $location.url();
+            $scope.host = $location.host();
+            $scope.search = $location.search();
+            $scope.protocol = $location.protocol();
+            $scope.port = $location.port();
+
+            $timeout(function () {
+                $scope.msg = '执行了';
+            }, 3000);
+
+            var timer = $interval(function () {
+                $scope.now = new Date;
+            }, 1000);
+
+            $scope.stop = function () {
+                $interval.cancel(timer);
+            },
+
+                $scope.price = 11.22;
+            var currency = $filter('currency');
+            $scope.price = currency($scope.price);
+            $scope.str = 'hello angular';
+            var uppercase = $filter('uppercase');
+            $scope.str = uppercase($scope.str);
+            $scope.str1 = $filter('limitTo')($scope.str, 2);
+
+            $log.info('普通信息');
+            $log.warn('警告信息');
+            $log.error('错误信息');
+            $log.log('打印信息');
+            $log.debug('调试信息');
+
+            $http({
+                url: '',
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                params: {// get 参数
+                    name: 'it',
+                    sex: '男'
+                },
+                // data: 'age=10'
+                data: {// post 传参
+                    age: 10
+                }
+            }).success(function (info) {
+                $log.info(info)
+            });
+
+        }]);
+
+    // 接口方式
+    // SOAP RESTFUL
+
+    // 一个说你该如何请求数据的文档
+
+    // 请求地址: xxx/xxx.php
+    // 请求方式：post
+    // 参数：id [用户ID] page [页码]
+
+    // 如下数据
+    // [] '' {}
+
+
+    // 传递的数据可以是'key=val&key=val'形式，这种形式叫formData
+    // Content-Type 设成 application/x-www-form-urlencoded
+    // 当请求数据类型不一样，后端在接收的时采取方法也不一样
+    // 假如上述方式以PHP为例可以使用$_POST接收
+
+    // application/json;charset=UTF-8 就是json对象形式传
+    // Request Payload
+    // 假如采用上述方式，以PHP为例$_POST就不能接收了
+
+    for (var key in location) {
+        console.log(key + '=>' + location[key])
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器</title>
+</head>
+<body ng-app="App">
+<ul ng-controller="DemoController">
+    <li>{{price|currency:'￥'}}</li>
+    <li>{{now|date:'yyyy/MM/dd hh:mm:ss'}}</li>
+    <li>{{item|filter:'s'}}</li>
+    <li>{{students|filter:{age:16} }}</li>
+    <li>{{students|json}}</li>
+    <li>{{item|limitTo:-1}}</li>
+    <li>{{str|uppercase|limitTo:3}}</li>
+    <li>{{str|lowercase}}</li>
+    <li>{{num|number:2}}</li>
+    <li>{{students|orderBy:'age':false}}</li>
+    <li>{{students|orderBy:[orderIt,'age','name']:true}}</li>
+
+</ul>
+
+
+<script src="libs/angular.min.js"></script>
+
+<script>
+
+    var App = angular.module('App', []);
+
+    App.controller('DemoController', ['$scope', function ($scope) {
+
+        $scope.price = 12.22;
+        $scope.now = new Date;
+        $scope.item = ['html', 'css', 'js'];
+
+        $scope.students = [{name: '小米', age: 16}, {name: '小红', age: 16}, {name: '小飞', age: 17}];
+
+        $scope.str='hello,World';
+
+        $scope.num='12.324';
+
+    }]);
+</script>
+
+</body>
+</html>

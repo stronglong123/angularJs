@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TodoList</title>
+</head>
+<body ng-app="TodoList">
+<div class="todolist" ng-controller="TodoController">
+    <form ng-submit="addTodo()">
+        <input type="text" ng-model="todo">
+    </form>
+
+    <dl>
+        <dt>待办事项</dt>
+        <dd ng-repeat="todo in todos">
+            <input type="checkbox" ng-click="done($index);" ng-checked="{{todo.checked}}">
+            <span>{{todo.text}}</span>
+            <a href="javascript:;">删除</a>
+        </dd>
+        <dt>已办事项</dt>
+        <dd ng-repeat="doneTodo in doneTodos">
+            <input type="checkbox" ng-checked="{{doneTode.checked}}">
+            <span>{{doneTodo.text}}</span>
+            <a href="javascript:;">删除</a>
+        </dd>
+
+
+
+    </dl>
+
+</div>
+<script src="../libs/angular.min.js"></script>
+<script>
+    var TodoList=angular.module('TodoList',[]);
+    TodoList.controller('TodoController',['$scope',function ($scope) {
+        $scope.todos=[];
+        $scope.doneTodos=[];
+
+        $scope.addTodo=function () {
+            $scope.todos.push({checked:false,text:$scope.todo})
+            $scope.todo='';
+        }
+
+        $scope.done=function (index) {
+            var doneTodo =$scope.todos.splice(index,1)[0];
+
+            doneTodo.checked=true;
+            $scope.doneTodos.push(doneTodo);
+        }
+    }]);
+</script>
+</body>
+</html>
