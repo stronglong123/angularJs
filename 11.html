@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义服务</title>
+
+</head>
+<body ng-app="App">
+
+<div ng-controller="DemoController">
+    {{author}}
+    {{version}}
+</div>
+
+
+<script src="libs/angular.min.js"></script>
+<script>
+    var App = angular.module('App', []);
+    App.controller('DemoController', ['$scope', '$http', 'format', 'showTime','author','version',
+        function ($scope, $http, format,showTime,author,version) {
+            var data = {
+                name: 'yeci',
+                age: 10
+            }
+            console.log(format.format(data));
+            // console.log(format.sayHello());
+            // $http({
+            //     url: 'http://api.map.baidu.com/telematics/v3/weather',
+            //     method: 'post',
+            //     headers: {
+            //         'Content-Type': 'application/x-www-form-urlencoded'
+            //     },
+            //     data: format.format(data)
+            // }).success(function (info) {
+            //     console.log(info);
+            // })
+
+
+            $scope.now = showTime.now();
+
+            showTime.sayHello();
+
+            $scope.author = author;
+            $scope.version = version;
+        }]);
+
+
+    App.factory('format', ['$filter', function ($filter) {
+        // 自定义服务，但依赖于$filter
+
+        // 定义服务具体功能
+        function format(arg) {
+            var s = '';
+            for (var key in arg) {
+                s += key + ':' + arg[key] + '&';
+            }
+            s = s.slice(0, -1);
+            return s;
+        }
+
+        // 具体功能
+        function sayHello() {
+            alert('你好');
+        }
+
+        // 返回出去以被调用
+        return {
+            format: format,
+            sayHello: sayHello
+        }
+    }]);
+
+    // 自定义服务显示日期
+    // 提供了3种方法实现自定义服务
+    // factory、service、value
+    App.service('showTime', ['$filter', function ($filter) {
+        var now = new Date;
+        var date = $filter('date');
+
+        // 向对象上添加具体方法
+        this.now = function () {
+            return date(now, 'yyyy/MM/dd hh:mm:ss');
+        }
+
+        // 添加具体方法
+        this.sayHello = function () {
+            alert('你好');
+        }
+
+    }]);
+
+    App.value('author', 'yeci');
+    App.value('version', '1.0');
+</script>
+
+</body>
+</html>
